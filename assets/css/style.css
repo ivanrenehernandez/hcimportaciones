@@ -1,0 +1,8 @@
+.bg-ihc {
+    background-color: #d4b91b;
+    color: white;
+}
+
+.content-body {
+     min-height: calc(100vh);
+}
