@@ -1,6 +1,6 @@
 <?php
 require_once 'modeloBase.php';
-class Carrito extends modeloBase
+class Venta extends modeloBase
 {
     private $id, $vendedor_id, $carrito_id;
 

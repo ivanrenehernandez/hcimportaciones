@@ -1,6 +1,6 @@
 <?php
 require_once 'modeloBase.php';
-class Bodega extends modeloBase
+class Categoria extends modeloBase
 {
     private $id, $nombre;
 

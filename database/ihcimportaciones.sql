@@ -32,7 +32,7 @@ CREATE TABLE `producto` (
     `calidad_id` INT(1) UNSIGNED NOT NULL,
     `titulo` VARCHAR(50) NOT NULL,
     `descripcion` TEXT DEFAULT NULL,
-    `precio` VARCHAR(20) NOT NULL,
+    `precio` INT NOT NULL,
     `fecha_registro` DATE NOT NULL,
     PRIMARY KEY `pk_producto`(`id`)
 ) ENGINE = InnoDB;
