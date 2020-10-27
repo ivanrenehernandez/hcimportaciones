@@ -2,6 +2,10 @@
     background-color: #d4b91b;
     color: white;
 }
+.bg-ihc2 {
+    background-color: #f5d93a;
+    color: white;
+}
 
 .content-body {
      min-height: calc(100vh);

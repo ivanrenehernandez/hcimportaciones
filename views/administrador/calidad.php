@@ -1,5 +1,5 @@
 <head>
-    <title>Administrador/Inicio</title>
+    <title>Administrador/Calidad</title>
 </head>
 
 <body>
@@ -28,48 +28,16 @@
                 <div class="col-12 col-sm-12 col-md-4">
                     <div class="card">
                         <div class="card-header bg-ihc py-4 text-white text-center">
-                            <h2>Registrar Producto</h2>
+                            <h2>Registrar Calidad</h2>
                         </div>
                         <div class="card-body">
                             <h6 class="card-title text-right">Digite sus credenciales</h6>
-                            <form action="<?= base_url ?>administrador/registrarProducto" method="POST">
+                            <form action="<?= base_url ?>administrador/registrarCalidad" method="POST">
                                 <div class="row">
                                     <div class="col-12 col-md-12">
                                         <div class="form-group mb-2">
-                                            <label class="font-weight-bold">Titulo</label>
-                                            <input type="text" name="titulo" class="form-control" aria-describedby="helpId" required>
-                                            <small id="helpId" class="text-muted"></small>
-                                        </div>
-                                        <div class="form-group my-2">
-                                            <label class="font-weight-bold">Descripción</label>
-                                            <input type="text" name="descripcion" class="form-control" aria-describedby="helpId" required>
-                                            <small id="helpId" class="text-muted"></small>
-                                        </div>
-                                        <div class="form-group my-2">
-                                            <label class="font-weight-bold">Categoria</label>
-                                            <select class="form-control" name="categoria_id">
-
-                                                <?php
-                                                while ($categoria = $categorias->fetch_object()) { ?>
-                                                    <option value="<?= $categoria->id ?>"><?= $categoria->nombre ?> </option>
-                                                <?php }
-                                                ?>
-                                            </select>
-                                        </div>
-                                        <div class="form-group my-2">
-                                            <label class="font-weight-bold">Calidad</label>
-                                            <select class="form-control" name="calidad_id">
-
-                                                <?php
-                                                while ($calidad = $calidades->fetch_object()) { ?>
-                                                    <option value="<?= $calidad->id ?>"><?= $calidad->nombre ?> </option>
-                                                <?php }
-                                                ?>
-                                            </select>
-                                        </div>
-                                        <div class="form-group my-2">
-                                            <label class="font-weight-bold">Precio</label>
-                                            <input type="number" name="precio" class="form-control" aria-describedby="helpId" required>
+                                            <label class="font-weight-bold">Nombres</label>
+                                            <input type="text" name="nombre" class="form-control" aria-describedby="helpId" required>
                                             <small id="helpId" class="text-muted"></small>
                                         </div>
                                         <div class="form-group mt-4">
@@ -91,12 +59,8 @@
                             <thead>
                                 <tr class="bg-ihc text-center">
                                     <th>No.</th>
-                                    <th>Titulo</th>
-                                    <th>Descripcion</th>
-                                    <th>Categoria</th>
-                                    <th>Calidad</th>
-                                    <th>Precio</th>
-                                    <th>...</th>
+                                    <th>Nombres</th>
+                                    <th class="w-25">...</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -104,25 +68,21 @@
                                 $i = 0;
                                 ?>
                                 <?php
-                                while ($producto = $productos->fetch_object()) { ?>
+                                while ($calidad = $calidades->fetch_object()) { ?>
                                     <tr class="text-center">
                                         <?php $i++; ?>
                                         <td><?= $i ?></td>
-                                        <td><?= $producto->titulo ?></td>
-                                        <td><?= $producto->descripcion ?></td>
-                                        <td><?= $producto->categoria ?> </td>
-                                        <td><?= $producto->calidad ?> </td>
-                                        <td><?= $producto->precio ?> </td>
+                                        <td><?= $calidad->nombre ?></td>
                                         <td>
                                             <div class="btn-group">
-                                                <form action="<?= base_url ?>administrador/eliminarProducto" class="was-validated" method="POST">
-                                                    <input type="hidden" name="id" value="<?= $producto->id ?>">
+                                                <form action="<?= base_url ?>administrador/eliminarCalidad" class="was-validated" method="POST">
+                                                    <input type="hidden" name="id" value="<?= $calidad->id ?>">
                                                     <button type="submit" class="btn btn-danger btn-block">Eliminar</button>
                                                 </form>
-                                                <form action="<?= base_url ?>administrador/verProducto" class="was-validated" method="POST">
+                                                <!-- <form action="<?= base_url ?>administrador/verProducto" class="was-validated" method="POST">
                                                     <input type="hidden" name="id" value="<?= $producto->id ?>">
                                                     <button type="submit" class="btn btn-warning btn-block">Ver perfil</button>
-                                                </form>
+                                                </form> -->
                                             </div>
                                         </td>
                                     </tr>

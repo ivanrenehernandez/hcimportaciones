@@ -8,7 +8,7 @@ class Administrador extends modeloBase
     {
         parent::__construct();
     }
-    
+
     public function getPassword()
     {
         return $this->password;
@@ -37,5 +37,28 @@ class Administrador extends modeloBase
     public function setId($id)
     {
         $this->id = $this->db->real_escape_string($id);
+    }
+
+    public function login()
+    {
+        $admin = $this->seleccionarUno();
+        if ($admin && $admin->num_rows == 1) {
+            $admin = $admin->fetch_object();
+            if ($this->getPassword() == $admin->password) {
+                return $admin;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public function seleccionarUno()
+    {
+        $tabla = 'administrador';
+        $campos = '*';
+        $id = 'email=' . $this->getEmail();
+        return parent::selectOne($tabla, $campos, $id);
     }
 }

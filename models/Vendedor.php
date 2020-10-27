@@ -78,4 +78,28 @@ class Vendedor extends modeloBase
     {
         $this->password = $this->db->real_escape_string($password);
     }
+
+    public function listar()
+    {
+        $tabla = 'vendedor v';
+        $id = 'id';
+        return parent::selectTotal($tabla, $id);
+    }
+
+    public function insertar()
+    {
+        $tabla = 'vendedor';
+        $password = '1234';
+        $campos = '(nombres, apellidos, documento, email, password, celular, fecha_nacimiento)';
+        $fecha = getdate();
+        $valores = "('{$this->getNombres()}','{$this->getApellidos()}','{$this->getDocumento()}','{$this->getEmail()}','{$password}','{$this->getCelular()}','{$fecha}')";
+        return parent::registrar($tabla, $campos, $valores);
+    }
+
+    public function eliminar()
+    {
+        $tabla = 'vendedor';
+        $id = 'id = ' . $this->getId();
+        return parent::delete($tabla, $id);
+    }
 }

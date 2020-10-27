@@ -28,4 +28,26 @@ class Calidad extends modeloBase
     {
         $this->nombre = $this->db->real_escape_string($nombre);
     }
+
+    public function listar()
+    {
+        $tabla = 'calidad';
+        $id = 'id';
+        return parent::selectTotal($tabla, $id);
+    }
+
+    public function insertar()
+    {
+        $tabla = 'calidad   ';
+        $campos = '(nombre)';
+        $valores = "('{$this->getNombre()}')";
+        return parent::registrar($tabla, $campos, $valores);
+    }
+
+    public function eliminar()
+    {
+        $tabla = 'calidad';
+        $id = 'id = ' . $this->getId();
+        return parent::delete($tabla, $id);
+    }
 }

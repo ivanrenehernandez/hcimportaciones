@@ -2,7 +2,7 @@
 require_once 'modeloBase.php';
 class Cliente extends modeloBase
 {
-    private $id, $nombres, $apellidos, $documento, $celular, $email, $password;
+    private $id, $nombres, $apellidos, $documento, $fecha_nacimiento, $celular, $email, $password;
 
     function __construct()
     {
@@ -27,6 +27,11 @@ class Cliente extends modeloBase
     public function getDocumento()
     {
         return $this->documento;
+    }
+
+    public function getFecha_nacimiento()
+    {
+        return $this->fecha_nacimiento;
     }
 
     public function getCelular()
@@ -77,5 +82,33 @@ class Cliente extends modeloBase
     public function setPassword($password)
     {
         $this->password = $this->db->real_escape_string($password);
+    }
+
+    public function setFecha_nacimiento($fecha_nacimiento)
+    {
+        $this->fecha_nacimiento = $this->db->real_escape_string($fecha_nacimiento);
+    }
+
+    public function insertar()
+    {
+        $tabla = 'cliente';
+        $campos = '(nombres, apellidos, documento, celular, fecha_nacimiento, email, password)';
+        $valores = "('{$this->getNombres()}','{$this->getApellidos()}','{$this->getDocumento()}','{$this->getCelular()}','{$this->getFecha_nacimiento()}','{$this->getEmail()}','{$this->getPassword()}')";
+        return parent::registrar($tabla, $campos, $valores);
+    }
+
+
+     public function listar()
+    {
+        $tabla = 'cliente';
+        $id = 'id';
+        return parent::selectTotal($tabla, $id);
+    }
+
+    public function eliminar()
+    {
+        $tabla = 'cliente';
+        $id = 'id = ' . $this->getId();
+        return parent::delete($tabla, $id);
     }
 }

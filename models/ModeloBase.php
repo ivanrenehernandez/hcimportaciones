@@ -9,7 +9,7 @@ class ModeloBase extends Conexion
         $this->db = Conexion::connect();
     }
 
-    public function insert($tabla, $campos, $valores)
+    public function registrar($tabla, $campos, $valores)
     {
         $sql = "INSERT INTO $tabla $campos VALUES $valores;";
         // echo "\n sql: " . $sql . "\n";
@@ -37,9 +37,9 @@ class ModeloBase extends Conexion
         // die();
         return $this->db->query($sql);
     }
-    public function select2Join($tabla, $campos, $tabla2, $join, $tabla3, $join2, $id, $order)
+    public function select2Join($tabla, $campos, $tabla2, $join, $tabla3, $join2, $order)
     {
-        $sql = "SELECT $campos FROM $tabla INNER JOIN $tabla2 ON $join INNER JOIN $tabla3 ON $join2 WHERE $id ORDER BY $order ASC;";
+        $sql = "SELECT $campos FROM $tabla INNER JOIN $tabla2 ON $join INNER JOIN $tabla3 ON $join2  ORDER BY $order ASC;";
         // echo "\n sql: " . $sql . "\n";
         // die();
         return $this->db->query($sql);
