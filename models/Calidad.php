@@ -38,10 +38,26 @@ class Calidad extends modeloBase
 
     public function insertar()
     {
-        $tabla = 'calidad   ';
+        $tabla = 'calidad';
         $campos = '(nombre)';
         $valores = "('{$this->getNombre()}')";
         return parent::registrar($tabla, $campos, $valores);
+    }
+
+    public function buscar()
+    {
+        $tabla = 'calidad';
+        $campos = '*';
+        $id = 'id = ' . "'{$this->getId()}'";
+        return parent::selectOne($tabla, $campos, $id);
+    }
+
+    public function actualizar()
+    {
+        $tabla = 'calidad';
+        $campos = "nombre = '{$this->getNombre()}'";
+        $id = 'id = ' . $this->getId();
+        return parent::update($tabla, $campos, $id);
     }
 
     public function eliminar()

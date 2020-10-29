@@ -98,7 +98,7 @@ class Cliente extends modeloBase
     }
 
 
-     public function listar()
+    public function listar()
     {
         $tabla = 'cliente';
         $id = 'id';
@@ -110,5 +110,21 @@ class Cliente extends modeloBase
         $tabla = 'cliente';
         $id = 'id = ' . $this->getId();
         return parent::delete($tabla, $id);
+    }
+
+    public function buscar()
+    {
+        $tabla = 'cliente';
+        $campos = '*';
+        $id = 'id = ' . "'{$this->getId()}'";
+        return parent::selectOne($tabla, $campos, $id);
+    }
+
+    public function actualizar()
+    {
+        $tabla = 'cliente';
+        $campos = "nombres = '{$this->getNombres()}', apellidos = '{$this->getApellidos()}', fecha_nacimiento = '{$this->getFecha_nacimiento()}', celular = '{$this->getCelular()}', email = '{$this->getEmail()}', password = '{$this->getPassword()}', documento = '{$this->getDocumento()}'";
+        $id = 'id = ' . $this->getId();
+        return parent::update($tabla, $campos, $id);
     }
 }

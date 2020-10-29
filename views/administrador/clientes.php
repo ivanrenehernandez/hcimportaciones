@@ -101,9 +101,10 @@
                                         <td><?= $cliente->celular ?> </td>
                                         <td>
                                             <div class="btn-group">
-                                                <form action="<?= base_url ?>administrador/eliminarCliente" class="was-validated" method="POST">
+                                                <a class="btn btn-info" href="<?= base_url ?>administrador/perfilCliente&id=<?= $cliente->id ?>">Perfil</a>
+                                                <form action="<?= base_url ?>administrador/eliminarCliente&id=<?= $cliente->id ?>" class="was-validated" method="POST">
                                                     <input type="hidden" name="id" value="<?= $cliente->id ?>">
-                                                    <button type="submit" class="btn btn-danger btn-block">Eliminar</button>
+                                                    <button type="submit" class="btn btn-danger">Eliminar</button>
                                                 </form>
                                                 <!-- <form action="<?= base_url ?>administrador/verProducto" class="was-validated" method="POST">
                                                     <input type="hidden" name="id" value="<?= $producto->id ?>">

@@ -115,13 +115,10 @@
                                         <td><?= $producto->precio ?> </td>
                                         <td>
                                             <div class="btn-group">
+                                                <a href="<?= base_url ?>administrador/perfilProducto&id=<?= $producto->id ?>" class="btn btn-info btn-block">Ver</a>
                                                 <form action="<?= base_url ?>administrador/eliminarProducto" class="was-validated" method="POST">
                                                     <input type="hidden" name="id" value="<?= $producto->id ?>">
                                                     <button type="submit" class="btn btn-danger btn-block">Eliminar</button>
-                                                </form>
-                                                <form action="<?= base_url ?>administrador/verProducto" class="was-validated" method="POST">
-                                                    <input type="hidden" name="id" value="<?= $producto->id ?>">
-                                                    <button type="submit" class="btn btn-warning btn-block">Ver perfil</button>
                                                 </form>
                                             </div>
                                         </td>

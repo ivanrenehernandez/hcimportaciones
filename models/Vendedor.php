@@ -2,7 +2,7 @@
 require_once 'modeloBase.php';
 class Vendedor extends modeloBase
 {
-    private $id, $nombres, $apellidos, $documento, $celular, $email, $password;
+    private $id, $nombres, $apellidos, $documento, $celular, $email, $password, $fecha_nacimiento;
 
     function __construct()
     {
@@ -44,9 +44,14 @@ class Vendedor extends modeloBase
         return $this->password;
     }
 
+    public function getFecha_nacimiento()
+    {
+        return $this->fecha_nacimiento;
+    }
+
     public function setId($id)
     {
-        $this->id = $id;
+        $this->id = $this->db->real_escape_string($id);
     }
 
     public function setNombres($nombres)
@@ -79,9 +84,14 @@ class Vendedor extends modeloBase
         $this->password = $this->db->real_escape_string($password);
     }
 
+    public function setFecha_nacimiento($fecha_nacimiento)
+    {
+        $this->fecha_nacimiento = $this->db->real_escape_string($fecha_nacimiento);
+    }
+
     public function listar()
     {
-        $tabla = 'vendedor v';
+        $tabla = 'vendedor';
         $id = 'id';
         return parent::selectTotal($tabla, $id);
     }
@@ -95,11 +105,26 @@ class Vendedor extends modeloBase
         $valores = "('{$this->getNombres()}','{$this->getApellidos()}','{$this->getDocumento()}','{$this->getEmail()}','{$password}','{$this->getCelular()}','{$fecha}')";
         return parent::registrar($tabla, $campos, $valores);
     }
+    public function buscar()
+    {
+        $tabla = 'vendedor';
+        $campos = '*';
+        $id = 'id = ' . "'{$this->getId()}'";
+        return parent::selectOne($tabla, $campos, $id);
+    }
 
     public function eliminar()
     {
         $tabla = 'vendedor';
         $id = 'id = ' . $this->getId();
         return parent::delete($tabla, $id);
+    }
+
+    public function actualizar()
+    {
+        $tabla = 'vendedor';
+        $campos = "nombres = '{$this->getNombres()}', apellidos = '{$this->getApellidos()}', fecha_nacimiento = '{$this->getFecha_nacimiento()}', celular = '{$this->getCelular()}', email = '{$this->getEmail()}', password = '{$this->getPassword()}', documento = '{$this->getDocumento()}'";
+        $id = 'id = ' . $this->getId();
+        return parent::update($tabla, $campos, $id);
     }
 }

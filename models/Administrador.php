@@ -54,11 +54,18 @@ class Administrador extends modeloBase
         }
     }
 
-    public function seleccionarUno()
+    public function logout()
     {
-        $tabla = 'administrador';
-        $campos = '*';
-        $id = 'email=' . $this->getEmail();
+       utils::deleteSesion('usuario');
+       utils::deleteSesion('rol');
+       
+    }
+
+    private function seleccionarUno()
+    {
+        $tabla = 'administrador a';
+        $campos = 'a.id, a.email, a.password';
+        $id = 'a.email = ' . "'{$this->getEmail()}'";
         return parent::selectOne($tabla, $campos, $id);
     }
 }

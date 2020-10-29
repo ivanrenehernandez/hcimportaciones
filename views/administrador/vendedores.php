@@ -60,6 +60,11 @@
                                             <input type="email" name="email" class="form-control" aria-describedby="helpId" required>
                                             <small id="helpId" class="text-muted"></small>
                                         </div>
+                                        <div class="form-group my-2">
+                                            <label class="font-weight-bold">Fecha de Nacimiento</label>
+                                            <input type="date" name="fecha_nacimiento" class="form-control" aria-describedby="helpId" min="1900-01-31" max="2005-01-31" required>
+                                            <small id="helpId" class="text-muted"></small>
+                                        </div>
                                         <div class="form-group mt-4">
                                             <button type="submit" class="btn btn-info btn-block bg-ihc">Registrarse</button>
                                         </div>
@@ -101,6 +106,7 @@
                                         <td><?= $vendedor->celular ?> </td>
                                         <td>
                                             <div class="btn-group">
+                                                <a class="btn btn-info btn-block" href="<?= base_url ?>administrador/perfilVendedor&id=<?= $vendedor->id ?>">Perfil</a>
                                                 <form action="<?= base_url ?>administrador/eliminarVendedor" class="was-validated" method="POST">
                                                     <input type="hidden" name="id" value="<?= $vendedor->id ?>">
                                                     <button type="submit" class="btn btn-danger btn-block">Eliminar</button>

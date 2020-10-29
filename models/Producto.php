@@ -2,7 +2,7 @@
 require_once 'modeloBase.php';
 class Producto extends modeloBase
 {
-    private $id, $categoria_id, $calidad_id, $titulo, $descripcion, $precio;
+    private $id, $categoria_id, $calidad_id, $titulo, $descripcion, $precio, $fecha_registro;
 
     function __construct()
     {
@@ -76,13 +76,23 @@ class Producto extends modeloBase
         $id = $this->getCalidad_id();
         return parent::selectOne($tabla, $campos, $id);
     }
-
     public function buscar()
     {
+        $tabla = 'producto p';
+        $campos = 'p.id ,p.titulo, p.descripcion, p.precio, c.id AS categoria_id, a.id AS calidad_id,c.nombre AS categoria, a.nombre AS calidad';
+        $tabla2 = 'categoria c';
+        $join = 'p.categoria_id = c.id';
+        $tabla3 = 'calidad a';
+        $join2 = 'p.calidad_id = a.id';
+        $id = 'p.id = ' . $this->getId();
+        return parent::selectOneJoin2($tabla, $campos, $tabla2, $join, $tabla3, $join2, $id);
+    }
+    public function actualizar()
+    {
         $tabla = 'producto';
-        $campos = '*';
-        $id = 'id = ' - $this->getId();
-        return parent::selectOne($tabla, $campos, $id);
+        $campos = "categoria_id = '{$this->getCategoria_id()}', calidad_id = '{$this->getCalidad_id()}', titulo = '{$this->getTitulo()}', descripcion = '{$this->getDescripcion()}', precio = '{$this->getPrecio()}'";
+        $id = 'id = ' . $this->getId();
+        return parent::update($tabla, $campos, $id);
     }
     public function listar()
     {

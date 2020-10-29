@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md bg-ihc navbar-dark">
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
     <!-- Brand -->
     <a class="navbar-brand" href="<?= base_url ?>administrador/index">IHCImportaciones</a>
 
@@ -21,6 +21,9 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="<?= base_url ?>administrador/calidad">Calidad</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?= base_url ?>administrador/bodegas">Bodegas</a>
             </li>
         </ul>
         <a href="<?= base_url ?>administrador/logout" class="btn btn-info py-2 rounded float-right">Cerrar Sesión</a>

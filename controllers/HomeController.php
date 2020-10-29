@@ -10,11 +10,17 @@ class HomeController
         // utils::deleteSesion('usuario');
         if (!isset($_SESSION['usuario'])) {
             require 'views/login.php';
+            die();
         }
+        header("Location:" . base_url . $_SESSION['rol'] . '/index');
     }
     public function secret()
     {
-        require_once 'views/login-admin.php';
+        if (!isset($_SESSION['usuario'])) {
+            require_once 'views/login-admin.php';
+            die();
+        }
+        header("Location:" . base_url . $_SESSION['rol'] . '/index');
     }
 
     public function registrarUsuario()

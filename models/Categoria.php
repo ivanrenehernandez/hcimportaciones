@@ -43,6 +43,23 @@ class Categoria extends modeloBase
         $valores = "('{$this->getNombre()}')";
         return parent::registrar($tabla, $campos, $valores);
     }
+
+    public function buscar()
+    {
+        $tabla = 'categoria';
+        $campos = '*';
+        $id = 'id = ' . "'{$this->getId()}'";
+        return parent::selectOne($tabla, $campos, $id);
+    }
+
+    public function actualizar()
+    {
+        $tabla = 'categoria';
+        $campos = "nombre = '{$this->getNombre()}'";
+        $id = 'id = ' . $this->getId();
+        return parent::update($tabla, $campos, $id);
+    }
+
     public function eliminar()
     {
         $tabla = 'categoria';

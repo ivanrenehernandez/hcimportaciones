@@ -30,6 +30,13 @@ class ModeloBase extends Conexion
         // die();
         return $this->db->query($sql);
     }
+    public function selectOneJoin2($tabla, $campos, $tabla2, $join, $tabla3, $join2, $id)
+    {
+        $sql = "SELECT $campos FROM $tabla INNER JOIN $tabla2 ON $join INNER JOIN $tabla3 ON $join2  WHERE $id;";
+        // echo "\n sql: " . $sql . "\n";
+        // die();
+        return $this->db->query($sql);
+    }
     public function selectJoin($tabla, $campos, $tabla2, $join, $id)
     {
         $sql = "SELECT $campos FROM $tabla INNER JOIN $tabla2 ON $join ORDER BY $id ASC;";

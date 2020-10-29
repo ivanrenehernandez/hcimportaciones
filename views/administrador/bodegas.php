@@ -1,5 +1,5 @@
 <head>
-    <title>Administrador/Calidad</title>
+    <title>Administrador/Bodegas</title>
 </head>
 
 <body>
@@ -28,11 +28,11 @@
                 <div class="col-12 col-sm-12 col-md-4">
                     <div class="card">
                         <div class="card-header bg-ihc py-4 text-white text-center">
-                            <h2>Registrar Calidad</h2>
+                            <h2>Registrar Bodega</h2>
                         </div>
                         <div class="card-body">
                             <h6 class="card-title text-right">Digite sus credenciales</h6>
-                            <form action="<?= base_url ?>administrador/registrarCalidad" method="POST">
+                            <form action="<?= base_url ?>administrador/registrarBodega" method="POST">
                                 <div class="row">
                                     <div class="col-12 col-md-12">
                                         <div class="form-group mb-2">
@@ -68,16 +68,16 @@
                                 $i = 0;
                                 ?>
                                 <?php
-                                while ($calidad = $calidades->fetch_object()) { ?>
+                                while ($bodega = $bodegas->fetch_object()) { ?>
                                     <tr class="text-center">
                                         <?php $i++; ?>
                                         <td><?= $i ?></td>
-                                        <td><?= $calidad->nombre ?></td>
+                                        <td><?= $bodega->nombre ?></td>
                                         <td>
-                                            <div class="btn-group   ">
-                                                <a href="<?= base_url ?>administrador/perfilCalidad&id=<?= $calidad->id ?>" class="btn btn-info btn-block">Ver</a>
-                                                <form action="<?= base_url ?>administrador/eliminarCalidad" class="was-validated" method="POST">
-                                                    <input type="hidden" name="id" value="<?= $calidad->id ?>">
+                                            <div class="btn-group">
+                                                <a href="<?= base_url ?>administrador/perfilbodega&id=<?= $bodega->id ?>" class="btn btn-info">Ver</a>
+                                                <form action="<?= base_url ?>administrador/eliminarbodega" class="was-validated" method="POST">
+                                                    <input type="hidden" name="id" value="<?= $bodega->id ?>">
                                                     <button type="submit" class="btn btn-danger btn-block">Eliminar</button>
                                                 </form>
                                             </div>
