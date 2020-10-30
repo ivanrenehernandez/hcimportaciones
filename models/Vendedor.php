@@ -89,6 +89,27 @@ class Vendedor extends modeloBase
         $this->fecha_nacimiento = $this->db->real_escape_string($fecha_nacimiento);
     }
 
+    public function login()
+    {
+        $vendedor = $this->seleccionarUno();
+        if ($vendedor && $vendedor->num_rows == 1) {
+            $vendedor = $vendedor->fetch_object();
+            if ($this->getPassword() == $vendedor->password) {
+                return $vendedor;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public function logout()
+    {
+        utils::deleteSesion('usuario');
+        utils::deleteSesion('rol');
+    }
+
     public function listar()
     {
         $tabla = 'vendedor';
@@ -126,5 +147,13 @@ class Vendedor extends modeloBase
         $campos = "nombres = '{$this->getNombres()}', apellidos = '{$this->getApellidos()}', fecha_nacimiento = '{$this->getFecha_nacimiento()}', celular = '{$this->getCelular()}', email = '{$this->getEmail()}', password = '{$this->getPassword()}', documento = '{$this->getDocumento()}'";
         $id = 'id = ' . $this->getId();
         return parent::update($tabla, $campos, $id);
+    }
+
+    private function seleccionarUno()
+    {
+        $tabla = 'vendedor';
+        $campos = '*';
+        $id = 'email = ' . "'{$this->getEmail()}'";
+        return parent::selectOne($tabla, $campos, $id);
     }
 }

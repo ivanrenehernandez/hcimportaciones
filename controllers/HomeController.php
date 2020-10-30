@@ -86,6 +86,25 @@ class HomeController
                         }
                         break;
                     case 'vendedor':
+                        if (!isset($_SESSION['usuario'])) {
+                            require 'models/Vendedor.php';
+                            $vendedor = new Vendedor();
+                            $email = $_POST['email'];
+                            $password = $_POST['password'];
+                            $vendedor->setEmail($email);
+                            $vendedor->setPassword($password);
+                            $res = $vendedor->login();
+                            if ($res) {
+                                $_SESSION['usuario'] = $res;
+                                $_SESSION['rol'] = 'vendedor';
+                                header("Location:" . base_url . 'vendedor/index');
+                                die();
+                            } else {
+                                $_SESSION['alert'] = 'login_failed';
+                                header("Location:" . base_url . 'home/secret');
+                                die();
+                            }
+                        }
                         break;
                     default:
                         break;
