@@ -2,7 +2,7 @@
 require_once 'modeloBase.php';
 class Carrito extends modeloBase
 {
-    private $id, $cliente_id, $existencia_id, $cantidad;
+    private $id, $cliente_id, $estado;
 
     function __construct()
     {
@@ -19,41 +19,31 @@ class Carrito extends modeloBase
         return $this->cliente_id;
     }
 
-    public function getExistencia_id()
+    public function getEstado()
     {
-        return $this->existencia_id;
-    }
-
-    public function getCantidad()
-    {
-        return $this->cantidad;
+        return $this->estado;
     }
 
     public function setId($id)
     {
         $this->id = $this->db->real_escape_string($id);
-
-        return $this;
     }
 
     public function setCliente_id($cliente_id)
     {
         $this->cliente_id = $this->db->real_escape_string($cliente_id);
-
-        return $this;
     }
 
-    public function setExistencia_id($existencia_id)
+    public function setEstado($estado)
     {
-        $this->existencia_id = $this->db->real_escape_string($existencia_id);
-
-        return $this;
+        $this->estado = $this->db->real_escape_string($estado);
     }
 
-    public function setCantidad($cantidad)
+    public function insertar()
     {
-        $this->cantidad = $this->db->real_escape_string($cantidad);
-
-        return $this;
+        $tabla = 'carrito';
+        $campos = '(cliente_id)';
+        $valores = "('{$this->getCliente_id()}')";
+        return parent::registrar($tabla, $campos, $valores);
     }
 }

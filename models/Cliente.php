@@ -149,11 +149,19 @@ class Cliente extends modeloBase
         return parent::update($tabla, $campos, $id);
     }
 
+    public function actualizarClave()
+    {
+        $tabla = 'cliente';
+        $campos = "password = '{$this->getPassword()}'";
+        $id = 'id = ' . $this->getId();
+        return parent::update($tabla, $campos, $id);
+    }
+
     private function seleccionarUno()
     {
-        $tabla = 'cliente e';
-        $campos = 'e.id, e.email, e.password';
-        $id = 'e.email = ' . "'{$this->getEmail()}'";
+        $tabla = 'cliente';
+        $campos = '*';
+        $id = 'email = ' . "'{$this->getEmail()}'";
         return parent::selectOne($tabla, $campos, $id);
     }
 }

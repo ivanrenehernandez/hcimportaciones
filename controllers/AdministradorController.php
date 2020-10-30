@@ -182,6 +182,7 @@ class AdministradorController
                 $descripcion = isset($_POST['descripcion']) ? $_POST['descripcion'] : false;
                 $categoria_id = isset($_POST['categoria_id']) ? $_POST['categoria_id'] : false;
                 $calidad_id = isset($_POST['calidad_id']) ? $_POST['calidad_id'] : false;
+                $image_url = isset($_POST['image_url']) ? $_POST['image_url'] : false;
                 $precio =  isset($_POST['precio']) ? $_POST['precio'] : false;
                 if ($titulo && $descripcion && $categoria_id && $calidad_id) {
                     require_once 'models/Producto.php';
@@ -191,6 +192,7 @@ class AdministradorController
                     $producto->setCategoria_id($categoria_id);
                     $producto->setCalidad_id($calidad_id);
                     $producto->setPrecio($precio);
+                    $producto->setImage($image_url);
                     $save = $producto->insertar();
                     if ($save) {
                         $_SESSION['alert'] = 'register_complete';
@@ -753,11 +755,16 @@ class AdministradorController
                     if ($update) {
                         $_SESSION['alert'] = 'update_complete';
                         header("Location:" . base_url . 'administrador/perfilCliente&id=' . $cliente->getId());
+                        die();
                     } else {
                         $_SESSION['alert'] = 'update_failed';
                         header("Location:" . base_url . 'administrador/perfilCliente&id=' . $cliente->getId());
+                        die();
                     }
                 }
+                $_SESSION['alert'] = 'update_failed';
+                header("Location:" . base_url . 'administrador/perfilCliente&id=' . $cliente->getId());
+                die();
             }
         }
         header("Location:" . base_url . 'home/login');

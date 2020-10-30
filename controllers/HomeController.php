@@ -15,6 +15,8 @@ class HomeController
     }
     public function secret()
     {
+        // utils::deleteSesion('usuario');
+        // utils::deleteSesion('rol');
         if (!isset($_SESSION['usuario'])) {
             require_once 'views/login-admin.php';
             die();
@@ -58,8 +60,6 @@ class HomeController
     }
     public function loginUsuario()
     {
-        echo 'login usuario';
-        die();
         if (!isset($_SESSION['usuario'])) {
             if ($_POST) {
                 $rol = isset($_POST['rol']) ? $_POST['rol'] : false;
@@ -74,7 +74,7 @@ class HomeController
                             $cliente->setPassword($password);
                             $res = $cliente->login();
                             if ($res) {
-                                $_SESSION['usuario'] = $cliente;
+                                $_SESSION['usuario'] = $res;
                                 $_SESSION['rol'] = 'cliente';
                                 header("Location:" . base_url . 'cliente/index');
                                 die();

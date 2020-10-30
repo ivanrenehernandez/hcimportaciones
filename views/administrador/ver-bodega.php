@@ -71,9 +71,9 @@
                                     <tr class="text-center">
                                         <?php $i++; ?>
                                         <td><?= $i ?></td>
-                                        <td><?= $existencia->producto ?></td>
-                                        <td><?= $existencia->categoria ?></td>
-                                        <td><?= $existencia->calidad ?> </td>
+                                        <td><a href="<?= base_url ?>administrador/perfilProducto&id=<?= $existencia->producto_id ?>" class="btn btn-primary"><?= $existencia->producto ?></a></td>
+                                        <td><a href="<?= base_url ?>administrador/perfilCategoria&id=<?= $existencia->categoria_id ?>" class="btn btn-info"><?= $existencia->categoria ?></a></td>
+                                        <td><a href="<?= base_url ?>administrador/perfilCategoria&id=<?= $existencia->calidad_id ?>" class="btn btn-warning"><?= $existencia->calidad ?></a> </td>
                                         <td><?= $existencia->cantidad ?> </td>
                                         <td>
                                             <div class="btn-group">

@@ -2,7 +2,7 @@
 require_once 'modeloBase.php';
 class Producto extends modeloBase
 {
-    private $id, $categoria_id, $calidad_id, $titulo, $descripcion, $precio, $fecha_registro;
+    private $id, $categoria_id, $calidad_id, $titulo, $descripcion, $precio, $fecha_registro, $image_url;
 
     function __construct()
     {
@@ -38,6 +38,10 @@ class Producto extends modeloBase
     {
         return $this->precio;
     }
+    public function getImage()
+    {
+        return $this->image_url;
+    }
 
     public function setId($id)
     {
@@ -63,10 +67,14 @@ class Producto extends modeloBase
     {
         $this->descripcion = $this->db->real_escape_string($descripcion);
     }
-
     public function setPrecio($precio)
     {
         $this->precio = $this->db->real_escape_string($precio);
+    }
+
+    public function setImage($image)
+    {
+        $this->image_url = $this->db->real_escape_string($image);
     }
 
     public function getCategoria()
@@ -79,7 +87,7 @@ class Producto extends modeloBase
     public function buscar()
     {
         $tabla = 'producto p';
-        $campos = 'p.id ,p.titulo, p.descripcion, p.precio, c.id AS categoria_id, a.id AS calidad_id,c.nombre AS categoria, a.nombre AS calidad';
+        $campos = 'p.id , p.titulo, p.image_url, p.descripcion, p.precio, c.id AS categoria_id, a.id AS calidad_id,c.nombre AS categoria, a.nombre AS calidad';
         $tabla2 = 'categoria c';
         $join = 'p.categoria_id = c.id';
         $tabla3 = 'calidad a';
@@ -97,7 +105,7 @@ class Producto extends modeloBase
     public function listar()
     {
         $tabla = 'producto p';
-        $campos = 'p.id ,p.titulo, p.descripcion, p.precio, c.nombre AS categoria, a.nombre AS calidad';
+        $campos = 'p.id ,p.titulo, p.image_url, p.descripcion, p.precio, c.nombre AS categoria, a.nombre AS calidad';
         $tabla2 = 'categoria c';
         $join = 'p.categoria_id = c.id';
         $tabla3 = 'calidad a';
@@ -105,12 +113,30 @@ class Producto extends modeloBase
         $order = 'p.id';
         return parent::select2Join($tabla, $campos, $tabla2, $join, $tabla3, $join2, $order);
     }
+
+    public function listarConExistencias()
+    {
+        $tabla = 'producto p';
+        $campos = 'p.id ,p.titulo, p.image_url, p.descripcion, p.precio, c.nombre AS categoria, a.nombre AS calidad, SUM(e.cantidad) AS cantidad';
+        $tabla2 = 'categoria c';
+        $join = 'p.categoria_id = c.id';
+        $tabla3 = 'calidad a';
+        $join2 = 'p.calidad_id = a.id';
+        $tabla4 = 'existencias e';
+        $join3 = 'e.producto_id = p.id';
+        $order = 'p.id';
+        $sql = "SELECT $campos FROM $tabla INNER JOIN $tabla2 ON $join INNER JOIN $tabla3 ON $join2  INNER JOIN $tabla4 ON $join3 ORDER BY $order ASC;";
+        echo $sql;
+        die();
+        return $this->db->query($sql);
+    }
     public function insertar()
     {
         $tabla = 'producto';
-        $campos = '(titulo, descripcion, precio, categoria_id, calidad_id, fecha_registro)';
+        $campos = '(titulo, descripcion, precio, categoria_id, calidad_id, fecha_registro, image_url)';
         $fecha = getdate();
-        $valores = "('{$this->getTitulo()}','{$this->getDescripcion()}','{$this->getPrecio()}','{$this->getCategoria_id()}','{$this->getCalidad_id()}','{$fecha}')";
+        $fecha = $fecha['year'] . '-' . $fecha['mon'] . '-' . $fecha['mday'];
+        $valores = "('{$this->getTitulo()}','{$this->getDescripcion()}','{$this->getPrecio()}','{$this->getCategoria_id()}','{$this->getCalidad_id()}','{$fecha}','{$this->getImage()}')";
         return parent::registrar($tabla, $campos, $valores);
     }
 

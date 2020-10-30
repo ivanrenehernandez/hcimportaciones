@@ -97,13 +97,13 @@
                                         <div class="form-group">
                                             <label class="font-weight-bold">Elige el rol</label>
                                             <select class="form-control" name="rol">
-                                                <option>Vendedor</option>
-                                                <option>Cliente</option>
+                                                <option value="vendedor">Vendedor</option>
+                                                <option value="cliente">Cliente</option>
                                             </select>
                                         </div>
                                         <div class="form-group my-1">
                                             <label class="font-weight-bold">Contraseña</label>
-                                            <input type="password" name="email" class="form-control" aria-describedby="helpId" required>
+                                            <input type="password" name="password" class="form-control" aria-describedby="helpId" required>
                                             <small id="helpId" class="text-muted"></small>
                                         </div>
                                         <div class="form-group my-1">

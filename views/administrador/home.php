@@ -45,6 +45,11 @@
                                             <input type="text" name="descripcion" class="form-control" aria-describedby="helpId" required>
                                             <small id="helpId" class="text-muted"></small>
                                         </div>
+                                        <div class="form-group mb-2">
+                                            <label class="font-weight-bold">Imágen</label>
+                                            <input type="url" name="image_url" class="form-control" aria-describedby="helpId" required>
+                                            <small id="helpId" class="text-muted"></small>
+                                        </div>
                                         <div class="form-group my-2">
                                             <label class="font-weight-bold">Categoria</label>
                                             <select class="form-control" name="categoria_id">

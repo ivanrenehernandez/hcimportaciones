@@ -32,6 +32,9 @@
                                 <input type="hidden" name="id" value="<?= $producto->id ?>">
                                 <div class="row">
                                     <div class="col-12 col-md-12">
+                                        <img src="<?= $producto->image_url ?>" class="img-fluid mx-auto d-block" width="300vh">
+                                    </div>
+                                    <div class="col-12 col-md-12">
                                         <div class="form-group mb-2">
                                             <label class="font-weight-bold">Titulo</label>
                                             <input type="text" name="titulo" class="form-control" aria-describedby="helpId" value="<?= $producto->titulo ?> " required>
