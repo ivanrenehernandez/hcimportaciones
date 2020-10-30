@@ -89,6 +89,27 @@ class Cliente extends modeloBase
         $this->fecha_nacimiento = $this->db->real_escape_string($fecha_nacimiento);
     }
 
+    public function login()
+    {
+        $cliente = $this->seleccionarUno();
+        if ($cliente && $cliente->num_rows == 1) {
+            $cliente = $cliente->fetch_object();
+            if ($this->getPassword() == $cliente->password) {
+                return $cliente;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public function logout()
+    {
+        utils::deleteSesion('usuario');
+        utils::deleteSesion('rol');
+    }
+
     public function insertar()
     {
         $tabla = 'cliente';
@@ -126,5 +147,13 @@ class Cliente extends modeloBase
         $campos = "nombres = '{$this->getNombres()}', apellidos = '{$this->getApellidos()}', fecha_nacimiento = '{$this->getFecha_nacimiento()}', celular = '{$this->getCelular()}', email = '{$this->getEmail()}', password = '{$this->getPassword()}', documento = '{$this->getDocumento()}'";
         $id = 'id = ' . $this->getId();
         return parent::update($tabla, $campos, $id);
+    }
+
+    private function seleccionarUno()
+    {
+        $tabla = 'cliente e';
+        $campos = 'e.id, e.email, e.password';
+        $id = 'e.email = ' . "'{$this->getEmail()}'";
+        return parent::selectOne($tabla, $campos, $id);
     }
 }

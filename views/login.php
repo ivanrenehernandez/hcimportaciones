@@ -6,17 +6,17 @@
     <?php require_once 'views/layouts/jumbotron.php'; ?>
     <?php require_once 'views/layouts/nav.php'; ?>
     <div class="container-fluid content-body">
+        <?php if (isset($_SESSION['alert']) && $_SESSION['alert'] == 'register_complete') : ?>
+            <div class="alert alert-success">
+                <strong>¡Excelente!</strong> Registro completado <div class="alert-link">Se ha completado el registro</div>
+            </div>
+        <?php elseif (isset($_SESSION['alert']) && $_SESSION['alert'] == 'register_failed') : ?>
+            <div class="alert alert-danger">
+                <strong>¡Error!</strong> Error de Registro <div href="#" class="alert-link">Verifique sus credenciales </div>
+            </div>
+        <?php endif; ?>
+        <?php utils::deleteSesion('alert'); ?>
         <div class="row mt-4 mb-2">
-            <?php if (isset($_SESSION['alert']) && $_SESSION['alert'] == 'register_complete') : ?>
-                <div class="alert alert-success">
-                    <strong>¡Excelente!</strong> Registro completado <div class="alert-link">Se ha completado el registro</div>
-                </div>
-            <?php elseif (isset($_SESSION['alert']) && $_SESSION['alert'] == 'register_failed') : ?>
-                <div class="alert alert-danger">
-                    <strong>¡Error!</strong> Error de Registro <div href="#" class="alert-link">Verifique sus credenciales </div>
-                </div>
-            <?php endif; ?>
-            <?php utils::deleteSesion('alert'); ?>
             <div class="col-12 col-sm-12 col-md-6 mx-auto">
                 <div class="container">
                     <div class="card">
@@ -83,7 +83,7 @@
                         </div>
                         <div class="card-body">
                             <h6 class="card-title text-right">Digite sus credenciales</h6>
-                            <form action="<?= base_url ?>">
+                            <form action="<?= base_url ?>home/loginUsuario" method="POST">
                                 <div class="row">
                                     <div class="col-12 col-md-12 d-none d-sm-block">
                                         <img src="<?= base_url ?>assets/images/usuario2.png" class="img-fluid mx-auto d-block" width="25%">
@@ -96,7 +96,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="font-weight-bold">Elige el rol</label>
-                                            <select class="form-control" name="" id="">
+                                            <select class="form-control" name="rol">
                                                 <option>Vendedor</option>
                                                 <option>Cliente</option>
                                             </select>
@@ -107,7 +107,7 @@
                                             <small id="helpId" class="text-muted"></small>
                                         </div>
                                         <div class="form-group my-1">
-                                            <button type="button" name="" class="btn btn-info btn-block bg-ihc">Iniciar Sesión</button>
+                                            <button type="submit" class="btn btn-info btn-block bg-ihc">Iniciar Sesión</button>
                                         </div>
                                     </div>
                                 </div>

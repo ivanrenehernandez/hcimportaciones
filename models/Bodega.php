@@ -46,7 +46,7 @@ class Bodega extends modeloBase
 
     public function buscar()
     {
-        $tabla = 'calidad';
+        $tabla = 'bodega';
         $campos = '*';
         $id = 'id = ' . "'{$this->getId()}'";
         return parent::selectOne($tabla, $campos, $id);
@@ -54,7 +54,7 @@ class Bodega extends modeloBase
 
     public function actualizar()
     {
-        $tabla = 'calidad';
+        $tabla = 'bodega';
         $campos = "nombre = '{$this->getNombre()}'";
         $id = 'id = ' . $this->getId();
         return parent::update($tabla, $campos, $id);
@@ -62,8 +62,10 @@ class Bodega extends modeloBase
 
     public function eliminar()
     {
-        $tabla = 'calidad';
+        $tabla = 'bodega';
         $id = 'id = ' . $this->getId();
         return parent::delete($tabla, $id);
     }
+
+    
 }

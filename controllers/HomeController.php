@@ -7,7 +7,6 @@ class HomeController
     }
     public function login()
     {
-        // utils::deleteSesion('usuario');
         if (!isset($_SESSION['usuario'])) {
             require 'views/login.php';
             die();
@@ -57,19 +56,41 @@ class HomeController
             }
         }
     }
-    public function loginCliente()
+    public function loginUsuario()
     {
+        echo 'login usuario';
+        die();
         if (!isset($_SESSION['usuario'])) {
-        }
-    }
-    public function loginAdministrador()
-    {
-        if (!isset($_SESSION['usuario'])) {
-        }
-    }
-    public function loginVendedor()
-    {
-        if (!isset($_SESSION['usuario'])) {
+            if ($_POST) {
+                $rol = isset($_POST['rol']) ? $_POST['rol'] : false;
+                switch ($rol) {
+                    case 'cliente':
+                        if (!isset($_SESSION['usuario'])) {
+                            require 'models/Cliente.php';
+                            $cliente = new Cliente();
+                            $email = $_POST['email'];
+                            $password = $_POST['password'];
+                            $cliente->setEmail($email);
+                            $cliente->setPassword($password);
+                            $res = $cliente->login();
+                            if ($res) {
+                                $_SESSION['usuario'] = $cliente;
+                                $_SESSION['rol'] = 'cliente';
+                                header("Location:" . base_url . 'cliente/index');
+                                die();
+                            } else {
+                                $_SESSION['alert'] = 'login_failed';
+                                header("Location:" . base_url . 'home/secret');
+                                die();
+                            }
+                        }
+                        break;
+                    case 'vendedor':
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
     }
 }

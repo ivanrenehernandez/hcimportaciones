@@ -27,7 +27,7 @@ class AdministradorController
     }
     public function logout()
     {
-        if (isset($_SESSION['usuario']) && $_SESSION['rol'] == 'administrador') {
+        if (isset($_SESSION['usuario']) && $_SESSION['rol'] === 'administrador') {
             $_SESSION['logout'] = '1';
             utils::deleteSesion('usuario');
             utils::deleteSesion('rol');
@@ -82,17 +82,44 @@ class AdministradorController
     }
     public function eliminarBodega()
     {
+        if (isset($_SESSION['usuario']) && $_SESSION['rol'] === 'administrador') {
+            if (isset($_POST['id'])) {
+                require 'models/Bodega.php';
+                $bodega = new Bodega();
+                $bodega->setId($_POST['id']);
+                $delete = $bodega->eliminar();
+                if ($delete) {
+                    $_SESSION['alert'] = 'delete_complete';
+                    header("Location:" . base_url . 'administrador/bodegas');
+                    die();
+                } else {
+                    $_SESSION['alert'] = 'delete_failed';
+                    header("Location:" . base_url . 'administrador/bodegas');
+                    die();
+                }
+            } else {
+                $_SESSION['alert'] = 'delete_failed';
+                header("Location:" . base_url . 'administrador/bodegas');
+                die();
+            }
+        }
+        header("Location:" . base_url . 'home/login');
     }
     public function perfilBodega()
     {
         if (isset($_SESSION['usuario']) && $_SESSION['rol'] === 'administrador') {
             if ($_GET) {
                 require_once 'models/Bodega.php';
-                $categoria = new Categoria();
+                require_once 'models/Existencias.php';
+
+                $bodega = new Bodega();
                 $id = isset($_GET['id']) ? $_GET['id'] : false;
-                $categoria->setId($id);
-                $categoria = $categoria->buscar()->fetch_object();
-                require_once 'views/administrador/ver-categoria.php';
+                $existencia = new Existencia();
+                $existencia->setBodega_id($id);
+                $existencias = $existencia->productos();
+                $bodega->setId($id);
+                $bodega = $bodega->buscar()->fetch_object();
+                require_once 'views/administrador/ver-bodega.php';
                 die();
             }
         }
@@ -100,7 +127,29 @@ class AdministradorController
     }
     public function actualizarBodega()
     {
-        # code...
+        if (isset($_SESSION['usuario']) && $_SESSION['rol'] === 'administrador') {
+            if (isset($_POST)) {
+                require_once 'models/Bodega.php';
+                $bodega = new Bodega();
+                $id = isset($_POST['id']) ? $_POST['id'] : false;
+                $nombre = isset($_POST['nombre']) ? $_POST['nombre'] : false;
+                if ($nombre) {
+                    $bodega->setId($id);
+                    $bodega->setNombre($nombre);
+                    $update = $bodega->actualizar();
+                    if ($update) {
+                        $_SESSION['alert'] = 'update_complete';
+                        header("Location:" . base_url . 'administrador/perfilBodega&id=' . $bodega->getId());
+                        die();
+                    } else {
+                        $_SESSION['alert'] = 'update_failed';
+                        header("Location:" . base_url . 'administrador/perfilBodega&id=' . $bodega->getId());
+                        die();
+                    }
+                }
+            }
+        }
+        header("Location:" . base_url . 'home/login');
     }
 
     # PRODUCTO
@@ -258,6 +307,7 @@ class AdministradorController
             $calidad = new Calidad();
             $calidades = $calidad->listar();
             require_once 'views/administrador/calidad.php';
+            die();
         }
         header("Location:" . base_url . 'home/login');
     }
@@ -289,7 +339,6 @@ class AdministradorController
         }
         header("Location:" . base_url . 'home/login');
     }
-
     public function eliminarCalidad()
     {
         if (isset($_SESSION['usuario']) && $_SESSION['rol'] === 'administrador') {
@@ -315,7 +364,6 @@ class AdministradorController
         }
         header("Location:" . base_url . 'home/login');
     }
-
     public function perfilCalidad()
     {
         if (isset($_SESSION['usuario']) && $_SESSION['rol'] === 'administrador') {
@@ -333,28 +381,32 @@ class AdministradorController
     }
     public function actualizarCalidad()
     {
-        if (isset($_POST)) {
-            require_once 'models/Calidad.php';
-            $calidad = new Calidad();
-            $id = isset($_POST['id']) ? $_POST['id'] : false;
-            $nombre = isset($_POST['nombre']) ? $_POST['nombre'] : false;
-            if ($nombre) {
-                $calidad->setId($id);
-                $calidad->setNombre($nombre);
-                $update = $calidad->actualizar();
-                if ($update) {
-                    $_SESSION['alert'] = 'update_complete';
-                    header("Location:" . base_url . 'administrador/perfilCalidad&id=' . $calidad->getId());
-                } else {
-                    $_SESSION['alert'] = 'update_failed';
-                    header("Location:" . base_url . 'administrador/perfilCalidad&id=' . $calidad->getId());
+        if (isset($_SESSION['usuario']) && $_SESSION['rol'] === 'administrador') {
+            if (isset($_POST)) {
+                require_once 'models/Calidad.php';
+                $calidad = new Calidad();
+                $id = isset($_POST['id']) ? $_POST['id'] : false;
+                $nombre = isset($_POST['nombre']) ? $_POST['nombre'] : false;
+                if ($nombre) {
+                    $calidad->setId($id);
+                    $calidad->setNombre($nombre);
+                    $update = $calidad->actualizar();
+                    if ($update) {
+                        $_SESSION['alert'] = 'update_complete';
+                        header("Location:" . base_url . 'administrador/perfilCalidad&id=' . $calidad->getId());
+                        die();
+                    } else {
+                        $_SESSION['alert'] = 'update_failed';
+                        header("Location:" . base_url . 'administrador/perfilCalidad&id=' . $calidad->getId());
+                        die();
+                    }
                 }
             }
         }
+        header("Location:" . base_url . 'home/login');
     }
 
     # CATEGORIA
-
     public function categorias()
     {
         if (isset($_SESSION['usuario']) && $_SESSION['rol'] === 'administrador') {
@@ -394,7 +446,6 @@ class AdministradorController
         }
         header("Location:" . base_url . 'home/login');
     }
-
     public function eliminarCategoria()
     {
         if (isset($_SESSION['usuario']) && $_SESSION['rol'] === 'administrador') {
@@ -420,7 +471,6 @@ class AdministradorController
         }
         header("Location:" . base_url . 'home/login');
     }
-
     public function perfilCategoria()
     {
         if (isset($_SESSION['usuario']) && $_SESSION['rol'] === 'administrador') {
@@ -438,24 +488,29 @@ class AdministradorController
     }
     public function actualizarCategoria()
     {
-        if (isset($_POST)) {
-            require_once 'models/Categoria.php';
-            $categoria = new Categoria();
-            $id = isset($_POST['id']) ? $_POST['id'] : false;
-            $nombre = isset($_POST['nombre']) ? $_POST['nombre'] : false;
-            if ($nombre) {
-                $categoria->setId($id);
-                $categoria->setNombre($nombre);
-                $update = $categoria->actualizar();
-                if ($update) {
-                    $_SESSION['alert'] = 'update_complete';
-                    header("Location:" . base_url . 'administrador/perfilCategoria&id=' . $categoria->getId());
-                } else {
-                    $_SESSION['alert'] = 'update_failed';
-                    header("Location:" . base_url . 'administrador/perfilCategoria&id=' . $categoria->getId());
+        if (isset($_SESSION['usuario']) && $_SESSION['rol'] === 'administrador') {
+            if (isset($_POST)) {
+                require_once 'models/Categoria.php';
+                $categoria = new Categoria();
+                $id = isset($_POST['id']) ? $_POST['id'] : false;
+                $nombre = isset($_POST['nombre']) ? $_POST['nombre'] : false;
+                if ($nombre) {
+                    $categoria->setId($id);
+                    $categoria->setNombre($nombre);
+                    $update = $categoria->actualizar();
+                    if ($update) {
+                        $_SESSION['alert'] = 'update_complete';
+                        header("Location:" . base_url . 'administrador/perfilCategoria&id=' . $categoria->getId());
+                        die();
+                    } else {
+                        $_SESSION['alert'] = 'update_failed';
+                        header("Location:" . base_url . 'administrador/perfilCategoria&id=' . $categoria->getId());
+                        die();
+                    }
                 }
             }
         }
+        header("Location:" . base_url . 'home/login');
     }
 
     # VENDEDOR
@@ -472,105 +527,117 @@ class AdministradorController
     }
     public function registrarVendedor()
     {
-        if (isset($_SESSION['usuario'])) {
-            # code...
-        }
-        if (isset($_POST)) {
-            $nombres = isset($_POST['nombres']) ? $_POST['nombres'] : false;
-            $apellidos = isset($_POST['apellidos']) ? $_POST['apellidos'] : false;
-            $documento = isset($_POST['documento']) ? $_POST['documento'] : false;
-            $celular = isset($_POST['celular']) ? $_POST['celular'] : false;
-            $email =  isset($_POST['email']) ? $_POST['email'] : false;
-            $fecha_nacimiento =  isset($_POST['fecha_nacimiento']) ? $_POST['fecha_nacimiento'] : false;
-            if ($nombres && $apellidos && $documento && $celular && $email && $fecha_nacimiento) {
-                require 'models/Vendedor.php';
-                $vendedor = new Vendedor();
-                $vendedor->setNombres($nombres);
-                $vendedor->setApellidos($apellidos);
-                $vendedor->setDocumento($documento);
-                $vendedor->setCelular($celular);
-                $vendedor->setEmail($email);
-                $vendedor->setFecha_nacimiento($fecha_nacimiento);
-                $save = $vendedor->insertar();
-                if ($save) {
-                    $_SESSION['alert'] = 'register_complete';
-                    header("Location:" . base_url . 'administrador/vendedores');
-                    die();
+        if (isset($_SESSION['usuario']) && $_SESSION['rol'] === 'administrador') {
+            if (isset($_SESSION['usuario'])) {
+                # code...
+            }
+            if (isset($_POST)) {
+                $nombres = isset($_POST['nombres']) ? $_POST['nombres'] : false;
+                $apellidos = isset($_POST['apellidos']) ? $_POST['apellidos'] : false;
+                $documento = isset($_POST['documento']) ? $_POST['documento'] : false;
+                $celular = isset($_POST['celular']) ? $_POST['celular'] : false;
+                $email =  isset($_POST['email']) ? $_POST['email'] : false;
+                $fecha_nacimiento =  isset($_POST['fecha_nacimiento']) ? $_POST['fecha_nacimiento'] : false;
+                if ($nombres && $apellidos && $documento && $celular && $email && $fecha_nacimiento) {
+                    require 'models/Vendedor.php';
+                    $vendedor = new Vendedor();
+                    $vendedor->setNombres($nombres);
+                    $vendedor->setApellidos($apellidos);
+                    $vendedor->setDocumento($documento);
+                    $vendedor->setCelular($celular);
+                    $vendedor->setEmail($email);
+                    $vendedor->setFecha_nacimiento($fecha_nacimiento);
+                    $save = $vendedor->insertar();
+                    if ($save) {
+                        $_SESSION['alert'] = 'register_complete';
+                        header("Location:" . base_url . 'administrador/vendedores');
+                        die();
+                    } else {
+                        $_SESSION['alert'] = 'register_failed';
+                        header("Location:" . base_url . 'administrador/vendedores');
+                        die();
+                    }
                 } else {
                     $_SESSION['alert'] = 'register_failed';
                     header("Location:" . base_url . 'administrador/vendedores');
                     die();
                 }
-            } else {
-                $_SESSION['alert'] = 'register_failed';
-                header("Location:" . base_url . 'administrador/vendedores');
-                die();
             }
         }
+        header("Location:" . base_url . 'home/login');
     }
     public function eliminarVendedor()
     {
-        if (isset($_POST['id'])) {
-            require 'models/Vendedor.php';
-            $vendedor = new Vendedor();
-            $vendedor->setId($_POST['id']);
-            $delete = $vendedor->eliminar();
-            if ($delete) {
-                $_SESSION['alert'] = 'delete_complete';
-                header("Location:" . base_url . 'administrador/vendedores');
-                die();
+        if (isset($_SESSION['usuario']) && $_SESSION['rol'] === 'administrador') {
+            if (isset($_POST['id'])) {
+                require 'models/Vendedor.php';
+                $vendedor = new Vendedor();
+                $vendedor->setId($_POST['id']);
+                $delete = $vendedor->eliminar();
+                if ($delete) {
+                    $_SESSION['alert'] = 'delete_complete';
+                    header("Location:" . base_url . 'administrador/vendedores');
+                    die();
+                } else {
+                    $_SESSION['alert'] = 'delete_failed';
+                    header("Location:" . base_url . 'administrador/vendedores');
+                    die();
+                }
             } else {
                 $_SESSION['alert'] = 'delete_failed';
                 header("Location:" . base_url . 'administrador/vendedores');
                 die();
             }
-        } else {
-            $_SESSION['alert'] = 'delete_failed';
-            header("Location:" . base_url . 'administrador/vendedores');
-            die();
         }
+        header("Location:" . base_url . 'home/login');
     }
     public function perfilVendedor()
     {
-        if ($_GET) {
-            require_once 'models/Vendedor.php';
-            $vendedor = new Vendedor();
-            $id = isset($_GET['id']) ? $_GET['id'] : false;
-            $vendedor->setId($id);
-            $vendedor = $vendedor->buscar()->fetch_object();
-            require_once 'views/administrador/ver-vendedor.php';
-            die();
+        if (isset($_SESSION['usuario']) && $_SESSION['rol'] === 'administrador') {
+            if ($_GET) {
+                require_once 'models/Vendedor.php';
+                $vendedor = new Vendedor();
+                $id = isset($_GET['id']) ? $_GET['id'] : false;
+                $vendedor->setId($id);
+                $vendedor = $vendedor->buscar()->fetch_object();
+                require_once 'views/administrador/ver-vendedor.php';
+                die();
+            }
         }
+        header("Location:" . base_url . 'home/login');
     }
     public function actualizarVendedor()
     {
-        if (isset($_POST)) {
-            require_once 'models/Vendedor.php';
-            $vendedor = new Vendedor();
-            $nombres = isset($_POST['nombres']) ? $_POST['nombres'] : false;
-            $apellidos = isset($_POST['apellidos']) ? $_POST['apellidos'] : false;
-            $documento = isset($_POST['documento']) ? $_POST['documento'] : false;
-            $celular = isset($_POST['celular']) ? $_POST['celular'] : false;
-            $email =  isset($_POST['email']) ? $_POST['email'] : false;
-            $fecha_nacimiento =  isset($_POST['fecha_nacimiento']) ? $_POST['fecha_nacimiento'] : false;
-            if ($nombres && $apellidos && $documento && $celular && $email && $fecha_nacimiento) {
-                $vendedor->setId($_POST['id']);
-                $vendedor->setNombres($nombres);
-                $vendedor->setApellidos($apellidos);
-                $vendedor->setDocumento($documento);
-                $vendedor->setCelular($celular);
-                $vendedor->setEmail($email);
-                $vendedor->setFecha_nacimiento($fecha_nacimiento);
-                $update = $vendedor->actualizar();
-                if ($update) {
-                    $_SESSION['alert'] = 'update_complete';
-                    header("Location:" . base_url . 'administrador/perfilVendedor&id=' . $vendedor->getId());
-                } else {
-                    $_SESSION['alert'] = 'update_failed';
-                    header("Location:" . base_url . 'administrador/perfilVendedor&id=' . $vendedor->getId());
+        if (isset($_SESSION['usuario']) && $_SESSION['rol'] === 'administrador') {
+            if (isset($_POST)) {
+                require_once 'models/Vendedor.php';
+                $vendedor = new Vendedor();
+                $nombres = isset($_POST['nombres']) ? $_POST['nombres'] : false;
+                $apellidos = isset($_POST['apellidos']) ? $_POST['apellidos'] : false;
+                $documento = isset($_POST['documento']) ? $_POST['documento'] : false;
+                $celular = isset($_POST['celular']) ? $_POST['celular'] : false;
+                $email =  isset($_POST['email']) ? $_POST['email'] : false;
+                $fecha_nacimiento =  isset($_POST['fecha_nacimiento']) ? $_POST['fecha_nacimiento'] : false;
+                if ($nombres && $apellidos && $documento && $celular && $email && $fecha_nacimiento) {
+                    $vendedor->setId($_POST['id']);
+                    $vendedor->setNombres($nombres);
+                    $vendedor->setApellidos($apellidos);
+                    $vendedor->setDocumento($documento);
+                    $vendedor->setCelular($celular);
+                    $vendedor->setEmail($email);
+                    $vendedor->setFecha_nacimiento($fecha_nacimiento);
+                    $update = $vendedor->actualizar();
+                    if ($update) {
+                        $_SESSION['alert'] = 'update_complete';
+                        header("Location:" . base_url . 'administrador/perfilVendedor&id=' . $vendedor->getId());
+                    } else {
+                        $_SESSION['alert'] = 'update_failed';
+                        header("Location:" . base_url . 'administrador/perfilVendedor&id=' . $vendedor->getId());
+                    }
                 }
             }
         }
+        header("Location:" . base_url . 'home/login');
     }
 
     # CLIENTE
@@ -649,44 +716,180 @@ class AdministradorController
     }
     public function perfilCliente()
     {
-        if ($_GET) {
-            require_once 'models/Cliente.php';
-            $cliente = new Cliente();
-            $id = isset($_GET['id']) ? $_GET['id'] : false;
-            $cliente->setId($id);
-            $cliente = $cliente->buscar()->fetch_object();
-            require_once 'views/administrador/ver-cliente.php';
-            die();
+        if (isset($_SESSION['usuario']) && $_SESSION['rol'] === 'administrador') {
+            if ($_GET) {
+                require_once 'models/Cliente.php';
+                $cliente = new Cliente();
+                $id = isset($_GET['id']) ? $_GET['id'] : false;
+                $cliente->setId($id);
+                $cliente = $cliente->buscar()->fetch_object();
+                require_once 'views/administrador/ver-cliente.php';
+                die();
+            }
         }
+        header("Location:" . base_url . 'home/login');
     }
     public function actualizarCliente()
     {
-        if (isset($_POST)) {
-            require_once 'models/Cliente.php';
-            $cliente = new Cliente();
-            $nombres = isset($_POST['nombres']) ? $_POST['nombres'] : false;
-            $apellidos = isset($_POST['apellidos']) ? $_POST['apellidos'] : false;
-            $documento = isset($_POST['documento']) ? $_POST['documento'] : false;
-            $celular = isset($_POST['celular']) ? $_POST['celular'] : false;
-            $email =  isset($_POST['email']) ? $_POST['email'] : false;
-            $fecha_nacimiento =  isset($_POST['fecha_nacimiento']) ? $_POST['fecha_nacimiento'] : false;
-            if ($nombres && $apellidos && $documento && $celular && $email && $fecha_nacimiento) {
-                $cliente->setId($_POST['id']);
-                $cliente->setNombres($nombres);
-                $cliente->setApellidos($apellidos);
-                $cliente->setDocumento($documento);
-                $cliente->setCelular($celular);
-                $cliente->setEmail($email);
-                $cliente->setFecha_nacimiento($fecha_nacimiento);
-                $update = $cliente->actualizar();
-                if ($update) {
-                    $_SESSION['alert'] = 'update_complete';
-                    header("Location:" . base_url . 'administrador/perfilCliente&id=' . $cliente->getId());
-                } else {
-                    $_SESSION['alert'] = 'update_failed';
-                    header("Location:" . base_url . 'administrador/perfilCliente&id=' . $cliente->getId());
+        if (isset($_SESSION['usuario']) && $_SESSION['rol'] === 'administrador') {
+            if (isset($_POST)) {
+                require_once 'models/Cliente.php';
+                $cliente = new Cliente();
+                $nombres = isset($_POST['nombres']) ? $_POST['nombres'] : false;
+                $apellidos = isset($_POST['apellidos']) ? $_POST['apellidos'] : false;
+                $documento = isset($_POST['documento']) ? $_POST['documento'] : false;
+                $celular = isset($_POST['celular']) ? $_POST['celular'] : false;
+                $email =  isset($_POST['email']) ? $_POST['email'] : false;
+                $fecha_nacimiento =  isset($_POST['fecha_nacimiento']) ? $_POST['fecha_nacimiento'] : false;
+                if ($nombres && $apellidos && $documento && $celular && $email && $fecha_nacimiento) {
+                    $cliente->setId($_POST['id']);
+                    $cliente->setNombres($nombres);
+                    $cliente->setApellidos($apellidos);
+                    $cliente->setDocumento($documento);
+                    $cliente->setCelular($celular);
+                    $cliente->setEmail($email);
+                    $cliente->setFecha_nacimiento($fecha_nacimiento);
+                    $update = $cliente->actualizar();
+                    if ($update) {
+                        $_SESSION['alert'] = 'update_complete';
+                        header("Location:" . base_url . 'administrador/perfilCliente&id=' . $cliente->getId());
+                    } else {
+                        $_SESSION['alert'] = 'update_failed';
+                        header("Location:" . base_url . 'administrador/perfilCliente&id=' . $cliente->getId());
+                    }
                 }
             }
         }
+        header("Location:" . base_url . 'home/login');
+    }
+
+    # EXISTENCIA
+    public function existencias()
+    {
+        if (isset($_SESSION['usuario']) && $_SESSION['rol'] === 'administrador') {
+            require_once 'models/Existencias.php';
+            require_once 'models/Bodega.php';
+            require_once 'models/Producto.php';
+            $existencia = new Existencia();
+            $existencias = $existencia->listar();
+            $bodega = new Bodega();
+            $bodegas = $bodega->listar();
+            $producto = new Producto();
+            $productos = $producto->listar();
+            require_once 'views/administrador/existencias.php';
+            die();
+        }
+        header("Location:" . base_url . 'home/login');
+    }
+    public function registrarExistencia()
+    {
+        if (isset($_SESSION['usuario']) && $_SESSION['rol'] === 'administrador') {
+            if (isset($_POST)) {
+                require_once 'models/Existencias.php';
+                $bodega_id = isset($_POST['bodega_id']) ? $_POST['bodega_id'] : false;
+                $producto_id = isset($_POST['producto_id']) ? $_POST['producto_id'] : false;
+                $cantidad = isset($_POST['cantidad']) ? $_POST['cantidad'] : false;
+                if ($bodega_id && $producto_id && $cantidad) {
+                    $existencia = new Existencia();
+                    $existencia->setBodega_id($bodega_id);
+                    $existencia->setProducto_id($producto_id);
+                    $existencia->setCantidad($cantidad);
+                    $save = $existencia->insertar();
+                    if ($save) {
+                        $_SESSION['alert'] = 'register_complete';
+                        header("Location:" . base_url . 'administrador/existencias');
+                        die();
+                    } else {
+                        $_SESSION['alert'] = 'register_failed';
+                        header("Location:" . base_url . 'administrador/existencias');
+                        die();
+                    }
+                }
+                $_SESSION['alert'] = 'register_failed';
+                header("Location:" . base_url . 'administrador/existencias');
+                die();
+            }
+        }
+        header("Location:" . base_url . 'home/login');
+    }
+    public function eliminarExistencia()
+    {
+        if (isset($_SESSION['usuario']) && $_SESSION['rol'] === 'administrador') {
+            if (isset($_POST['id'])) {
+                require 'models/Existencias.php';
+                $existencia = new Existencia();
+                $existencia->setId($_POST['id']);
+                $delete = $existencia->eliminar();
+                if ($delete) {
+                    $_SESSION['alert'] = 'delete_complete';
+                    header("Location:" . base_url . 'administrador/existencias');
+                    die();
+                } else {
+                    $_SESSION['alert'] = 'delete_failed';
+                    header("Location:" . base_url . 'administrador/existencias');
+                    die();
+                }
+            } else {
+                $_SESSION['alert'] = 'delete_failed';
+                header("Location:" . base_url . 'administrador/existencias');
+                die();
+            }
+        }
+        header("Location:" . base_url . 'home/login');
+    }
+    public function perfilExistencia()
+    {
+        if (isset($_SESSION['usuario']) && $_SESSION['rol'] === 'administrador') {
+            if ($_GET) {
+                require_once 'models/Existencias.php';
+                require_once 'models/Bodega.php';
+                require_once 'models/Producto.php';
+
+                $existencia = new Existencia();
+                $id = isset($_GET['id']) ? $_GET['id'] : false;
+                $existencia->setId($id);
+                $existencia = $existencia->buscar()->fetch_object();
+                $bodega = new Bodega();
+                $bodegas = $bodega->listar();
+                $producto = new Producto();
+                $productos = $producto->listar();
+
+                require_once 'views/administrador/ver-existencia.php';
+                die();
+            }
+        }
+        header("Location:" . base_url . 'home/login');
+    }
+    public function actualizarExistencia()
+    {
+        if (isset($_SESSION['usuario']) && $_SESSION['rol'] === 'administrador') {
+            if (isset($_POST)) {
+                require_once 'models/Existencias.php';
+                $bodega_id = isset($_POST['bodega_id']) ? $_POST['bodega_id'] : false;
+                $producto_id = isset($_POST['producto_id']) ? $_POST['producto_id'] : false;
+                $cantidad = isset($_POST['cantidad']) ? $_POST['cantidad'] : false;
+                if ($bodega_id && $producto_id && $cantidad) {
+                    $existencia = new Existencia();
+                    $existencia->setId($_POST['id']);
+                    $existencia->setBodega_id($bodega_id);
+                    $existencia->setProducto_id($producto_id);
+                    $existencia->setCantidad($cantidad);
+                    $save = $existencia->actualizar();
+                    if ($save) {
+                        $_SESSION['alert'] = 'update_complete';
+                        header("Location:" . base_url . 'administrador/perfilExistencia&id=' . $existencia->getId());
+                        die();
+                    } else {
+                        $_SESSION['alert'] = 'update_failed';
+                        header("Location:" . base_url . 'administrador/perfilExistencia&id=' . $existencia->getId());
+                        die();
+                    }
+                }
+                $_SESSION['alert'] = 'update_failed';
+                header("Location:" . base_url . 'administrador/perfilExistencia&id=' . $existencia->getId());
+                die();
+            }
+        }
+        header("Location:" . base_url . 'home/login');
     }
 }

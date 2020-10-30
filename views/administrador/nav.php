@@ -25,6 +25,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="<?= base_url ?>administrador/bodegas">Bodegas</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?= base_url ?>administrador/existencias">Existencias</a>
+            </li>
         </ul>
         <a href="<?= base_url ?>administrador/logout" class="btn btn-info py-2 rounded float-right">Cerrar Sesión</a>
     </div>
