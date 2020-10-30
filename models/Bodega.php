@@ -66,6 +66,4 @@ class Bodega extends modeloBase
         $id = 'id = ' . $this->getId();
         return parent::delete($tabla, $id);
     }
-
-    
 }
