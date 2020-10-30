@@ -144,7 +144,15 @@ class Vendedor extends modeloBase
     public function actualizar()
     {
         $tabla = 'vendedor';
-        $campos = "nombres = '{$this->getNombres()}', apellidos = '{$this->getApellidos()}', fecha_nacimiento = '{$this->getFecha_nacimiento()}', celular = '{$this->getCelular()}', email = '{$this->getEmail()}', password = '{$this->getPassword()}', documento = '{$this->getDocumento()}'";
+        $campos = "nombres = '{$this->getNombres()}', apellidos = '{$this->getApellidos()}', fecha_nacimiento = '{$this->getFecha_nacimiento()}', celular = '{$this->getCelular()}', email = '{$this->getEmail()}', documento = '{$this->getDocumento()}'";
+        $id = 'id = ' . $this->getId();
+        return parent::update($tabla, $campos, $id);
+    }
+
+    public function actualizarClave()
+    {
+        $tabla = 'vendedor';
+        $campos = "password = '{$this->getPassword()}'";
         $id = 'id = ' . $this->getId();
         return parent::update($tabla, $campos, $id);
     }

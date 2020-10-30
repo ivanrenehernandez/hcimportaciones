@@ -1,140 +1,142 @@
 <head>
-    <title>Vendedor/Perfil</title>
+    <title>Vendedor/Inicio</title>
 </head>
 
 <body>
     <?php require_once 'views/layouts/jumbotron.php'; ?>
-    <?php require_once 'views/Vendedor/nav.php'; ?>
+    <?php require_once 'views/vendedor/nav.php'; ?>
     <div class="content-body">
         <div class="container-fluid">
-            <?php if (isset($_SESSION['alert']) && $_SESSION['alert'] == 'update_complete') : ?>
+            <?php if (isset($_SESSION['alert']) && $_SESSION['alert'] == 'register_complete') : ?>
                 <div class="alert alert-success">
-                    <strong>¡Excelente!</strong> Actualización completada, <div class="alert-link">Se ha completado la actualización.</div>
+                    <strong>¡Excelente!</strong> Registro completado <div class="alert-link">Se ha completado el registro</div>
                 </div>
-            <?php elseif (isset($_SESSION['alert']) && $_SESSION['alert'] == 'update_failed') : ?>
+            <?php elseif (isset($_SESSION['alert']) && $_SESSION['alert'] == 'register_failed') : ?>
                 <div class="alert alert-danger">
-                    <strong>¡Error!</strong> Error de actualización, <div href="#" class="alert-link">Verifique su información. </div>
+                    <strong>¡Error!</strong> Error de Registro <div href="#" class="alert-link">Verifique sus credenciales </div>
                 </div>
+            <?php elseif (isset($_SESSION['alert']) && $_SESSION['alert'] == 'delete_complete') : ?>
+                <div class="alert alert-success">
+                    <strong>¡Excelente!</strong> Eliminación completada </div>
+            <?php elseif (isset($_SESSION['alert']) && $_SESSION['alert'] == 'delete_failed') : ?>
+                <div class="alert alert-danger">
+                    <strong>¡Error!</strong> Error de Eliminación </div>
             <?php endif; ?>
+
             <?php utils::deleteSesion('alert'); ?>
-            <div class="row my-2">
-                <div class="col-12 col-sm-12 col-md-4 my-2">
+            <div class="row my-4">
+                <div class="col-12 col-sm-12 col-md-4">
                     <div class="card">
-                        <div class="card-header py-4 bg-ihc"></div>
-                        <div class="card-body">
-                            <h3 class="card-title text-center">Perfil de Vendedor</h3>
-                            <img src="https://d500.epimg.net/cincodias/imagenes/2016/07/04/lifestyle/1467646262_522853_1467646344_noticia_normal.jpg" class="img-fluid img-responsive mx-auto d-block" width="400vh">
-                            <form action="<?= base_url ?>vendedor/actualizar" method="POST">
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Nombres</label>
-                                    <input type="text" name="nombres" class="form-control" placeholder="Actualiza tu nombre" value="<?= $_SESSION['usuario']->nombres ?>">
-                                </div>
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Apellidos</label>
-                                    <input type="text" name="apellidos" class="form-control" placeholder="" value="<?= $_SESSION['usuario']->apellidos ?>">
-                                </div>
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Email</label>
-                                    <input type="text" name="email" class="form-control" placeholder="" value="<?= $_SESSION['usuario']->email ?>">
-                                </div>
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Documento</label>
-                                    <input type="text" name="documento" class="form-control" placeholder="" value="<?= $_SESSION['usuario']->documento ?>">
-                                </div>
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Celular</label>
-                                    <input type="text" name="celular" class="form-control" placeholder="" value="<?= $_SESSION['usuario']->celular ?>">
-                                </div>
-                                <div class="form-group my-1">
-                                    <label class="font-weight-bold">Fecha de Nacimiento</label>
-                                    <input type="date" name="fecha_nacimiento" class="form-control" aria-describedby="helpId" required value="<?= $_SESSION['usuario']->fecha_nacimiento ?>" min="1920-07-22" max="2010-12-31">
-                                    <small id="helpId" class="text-muted"></small>
-                                </div>
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-warning btn-block">Actualizar</button>
-                                </div>
-                            </form>
-                            <!-- Button to Open the Modal -->
-                            <button type="button" class="btn btn-danger btn-block" data-toggle="modal" data-target="#actualizar_contraseña">
-                                Actualizar contraseña
-                            </button>
+                        <div class="card-header bg-ihc py-4 text-white text-center">
+                            <h2>Registrar Producto</h2>
                         </div>
-                        <div class="card-footer py-4 bg-ihc"></div>
-                    </div>
-                </div>
-                <!-- The Modal -->
-                <div class="modal" id="actualizar_contraseña">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
+                        <div class="card-body">
+                            <h6 class="card-title text-right">Digite sus credenciales</h6>
+                            <form action="<?= base_url ?>vendedor/registrarProducto" method="POST">
+                                <div class="row">
+                                    <div class="col-12 col-md-12">
+                                        <div class="form-group mb-2">
+                                            <label class="font-weight-bold">Titulo</label>
+                                            <input type="text" name="titulo" class="form-control" aria-describedby="helpId" required>
+                                            <small id="helpId" class="text-muted"></small>
+                                        </div>
+                                        <div class="form-group my-2">
+                                            <label class="font-weight-bold">Descripción</label>
+                                            <input type="text" name="descripcion" class="form-control" aria-describedby="helpId" required>
+                                            <small id="helpId" class="text-muted"></small>
+                                        </div>
+                                        <div class="form-group mb-2">
+                                            <label class="font-weight-bold">Imágen</label>
+                                            <input type="url" name="image_url" class="form-control" aria-describedby="helpId" required>
+                                            <small id="helpId" class="text-muted"></small>
+                                        </div>
+                                        <div class="form-group my-2">
+                                            <label class="font-weight-bold">Categoria</label>
+                                            <select class="form-control" name="categoria_id">
 
-                            <!-- Modal Header -->
-                            <div class="modal-header bg-ihc">
-                                <h4 class="modal-title">Actualizar contraseña</h4>
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            </div>
+                                                <?php
+                                                while ($categoria = $categorias->fetch_object()) { ?>
+                                                    <option value="<?= $categoria->id ?>"><?= $categoria->nombre ?> </option>
+                                                <?php }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <div class="form-group my-2">
+                                            <label class="font-weight-bold">Calidad</label>
+                                            <select class="form-control" name="calidad_id">
 
-                            <!-- Modal body -->
-                            <div class="modal-body">
-                                <form action="<?= base_url ?>Vendedor/actualizarClave" method="POST">
-                                    <div class="input-group mb-3">
-                                        <input type="password" name="password" id="password" class="form-control" placeholder="Actualiza tu contraseña" value="<?= $_SESSION['usuario']->password ?>">
-                                        <div class="input-group-append">
-                                            <span class="input-group-text">********</span>
+                                                <?php
+                                                while ($calidad = $calidades->fetch_object()) { ?>
+                                                    <option value="<?= $calidad->id ?>"><?= $calidad->nombre ?> </option>
+                                                <?php }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <div class="form-group my-2">
+                                            <label class="font-weight-bold">Precio</label>
+                                            <input type="number" name="precio" class="form-control" aria-describedby="helpId" required>
+                                            <small id="helpId" class="text-muted"></small>
+                                        </div>
+                                        <div class="form-group mt-4">
+                                            <button type="submit" class="btn btn-info btn-block bg-ihc">Registrarse</button>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <button class="btn btn-info btn-block">Actualizar contraseña</button>
-                                    </div>
-                                </form>
-                                <button class="btn btn-info float-right" onclick="mostrarPassword()">Mostrar</button>
+                                </div>
+                            </form>
+                            <hr>
 
-                            </div>
-
-                            <!-- Modal footer -->
-                            <div class="modal-footer bg-ihc">
-                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-                            </div>
-
+                        </div>
+                        <div class="card-footer py-4 bg-ihc">
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-sm-12 col-md-8 my-2">
-                    <h2>Mis Ventas</h2>
-                    <table class="table table-striped table-inverse table-responsive">
-                        <thead class="thead-inverse">
-                            <tr>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td scope="row"></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td scope="row"></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="col-12 col-sm-12 col-md-8">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="bg-ihc text-center">
+                                    <th>No.</th>
+                                    <th>Titulo</th>
+                                    <th>Descripcion</th>
+                                    <th>Categoria</th>
+                                    <th>Calidad</th>
+                                    <th>Precio</th>
+                                    <th>...</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $i = 0;
+                                ?>
+                                <?php
+                                while ($producto = $productos->fetch_object()) { ?>
+                                    <tr class="text-center">
+                                        <?php $i++; ?>
+                                        <td><?= $i ?></td>
+                                        <td><?= $producto->titulo ?></td>
+                                        <td><?= $producto->descripcion ?></td>
+                                        <td><?= $producto->categoria ?> </td>
+                                        <td><?= $producto->calidad ?> </td>
+                                        <td><?= $producto->precio ?> </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a href="<?= base_url ?>vendedor/perfilProducto&id=<?= $producto->id ?>" class="btn btn-info btn-block">Ver</a>
+                                                <form action="<?= base_url ?>vendedor/eliminarProducto" class="was-validated" method="POST">
+                                                    <input type="hidden" name="id" value="<?= $producto->id ?>">
+                                                    <button type="submit" class="btn btn-danger btn-block">Eliminar</button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <script>
-        function mostrarPassword() {
-            var password = document.getElementById("password");
-            if (password.type == "password") {
-                password.type = "text";
-            } else {
-                password.type = "password";
-            }
-        }
-    </script>
 
     <?php require_once 'views/layouts/footer.php'; ?>
 </body>

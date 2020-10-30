@@ -1,10 +1,10 @@
 <head>
-    <title>Cliente/Perfil</title>
+    <title>Vendedor/Perfil</title>
 </head>
 
 <body>
     <?php require_once 'views/layouts/jumbotron.php'; ?>
-    <?php require_once 'views/cliente/nav.php'; ?>
+    <?php require_once 'views/Vendedor/nav.php'; ?>
     <div class="content-body">
         <div class="container-fluid">
             <?php if (isset($_SESSION['alert']) && $_SESSION['alert'] == 'update_complete') : ?>
@@ -22,9 +22,9 @@
                     <div class="card">
                         <div class="card-header py-4 bg-ihc"></div>
                         <div class="card-body">
-                            <h3 class="card-title text-center">Perfil de Cliente</h3>
+                            <h3 class="card-title text-center">Perfil de Vendedor</h3>
                             <img src="https://d500.epimg.net/cincodias/imagenes/2016/07/04/lifestyle/1467646262_522853_1467646344_noticia_normal.jpg" class="img-fluid img-responsive mx-auto d-block" width="400vh">
-                            <form action="<?= base_url ?>cliente/actualizar" method="POST">
+                            <form action="<?= base_url ?>vendedor/actualizar" method="POST">
                                 <div class="form-group">
                                     <label class="font-weight-bold">Nombres</label>
                                     <input type="text" name="nombres" class="form-control" placeholder="Actualiza tu nombre" value="<?= $_SESSION['usuario']->nombres ?>">
@@ -75,7 +75,7 @@
 
                             <!-- Modal body -->
                             <div class="modal-body">
-                                <form action="<?= base_url ?>cliente/actualizarClave" method="POST">
+                                <form action="<?= base_url ?>Vendedor/actualizarClave" method="POST">
                                     <div class="input-group mb-3">
                                         <input type="password" name="password" id="password" class="form-control" placeholder="Actualiza tu contraseña" value="<?= $_SESSION['usuario']->password ?>">
                                         <div class="input-group-append">
@@ -99,7 +99,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-sm-12 col-md-8 my-2">
-                    <h2>Mis compras</h2>
+                    <h2>Mis Ventas</h2>
                     <table class="table table-striped table-inverse table-responsive">
                         <thead class="thead-inverse">
                             <tr>

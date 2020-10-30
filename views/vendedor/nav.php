@@ -10,6 +10,9 @@
     <!-- Navbar links -->
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
         <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="<?= base_url ?>vendedor/perfil">Perfil</a>
+            </li>
             <!-- <li class="nav-item">
                 <a class="nav-link" href="<?= base_url ?>administrador/vendedores">Mi carrito</a>
             </li>
